@@ -1,0 +1,28 @@
+.navbar {
+	display: flex;
+	align-items: center;
+	background: rgba(0,0,0,0.05);
+}
+.navbar-collapse {
+	justify-content: right;
+}
+@media screen and (min-width: 576px) {
+	.navbar-collapse {
+		display: flex;
+		flex-direction: row;
+	}
+}
+.navbar-collapse .my-2 {
+	display: flex;
+}
+.navbar ul li {
+	margin: 0 10px;
+}
+.navbar-brand {
+	display: flex;
+	align-items: center;
+	margin: 10px;
+}
+.my-2 input,.my-2 button, .navbar-toggler, {
+	margin: 0 5px;
+}
