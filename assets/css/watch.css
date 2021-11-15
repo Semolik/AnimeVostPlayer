@@ -155,12 +155,12 @@
 
 .video-mask{
 	width: 100%;
-	overflow: hidden;
+	display: flex;
+	aspect-ratio: 16/9;
 }
 .video-mask #web-player {
 	border-radius: 1rem;
 	position: relative;
-	height: 100%;
 	width: 100%;
 
 }

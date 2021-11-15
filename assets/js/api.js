@@ -268,22 +268,15 @@ function loadScreenshots(resp){
 function loadFranchise(resp){
 	
 }
-function ResizePlayer(){
-	var mask = document.getElementsByClassName("video-mask")[0];
-	mask.style.height = mask.clientWidth * (9/16);
-}
 function setupPlayer(playlist) {
 	var mask = document.getElementsByClassName("video-mask")[0];
     var player = new Playerjs({
 		id:"web-player",
 		file: playlist,
 		fluid: true,
-		aspectRatio: "16:9",
 		autoplay: false,
 		preferFullWindow: true,
 	});
-	ResizePlayer();
-	window.addEventListener("orientationchange", ResizePlayer);
 }
 function SaveToFavorites(){
 	let id = encodeURIComponent(getParameterByName("id"));
@@ -409,9 +402,7 @@ function unpackOneTitle(resp){
 						video_mask.appendChild(video);
 					AnimevostApiMethod(
 						"playlist",
-						function(data) {
-							setupPlayer(rebuildPlaylist(data));
-						},
+						function(data) {setupPlayer(rebuildPlaylist(data))},
 						"POST",
 						"id=" +newTitle['id'],
 					);
