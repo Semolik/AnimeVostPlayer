@@ -85,15 +85,15 @@ function loadFavorites(){
 	}
 }
 
-function load404Page() {
+function loadErrorPage(msg) {
 	var container = document.getElementById("container");
 	while (container.firstChild) {
     	container.removeChild(container.firstChild);
 	}
 	container.style = "width:100%;height:100%;display:flex;align-items:center;justify-content: center;";
-	document.title = 404;
+	document.title = msg;
 	var h1 = document.createElement("h1");
-	h1.innerHTML = "404";
+	h1.innerHTML = msg;
 	container.appendChild(h1);
 }
 function GetAnimesMethodByArg(
@@ -130,7 +130,7 @@ function AnimevostApiMethod(
 				if (resp['state']['status']=='ok'){
 					onload(resp);
 				} else {
-					load404Page();
+					loadErrorPage("404");
 				}
 			} catch {
 				onload(resp);
@@ -142,7 +142,7 @@ function AnimevostApiMethod(
 		onerror!=null ?
 		onerror : function() {
 			console.log(`${type} запрос ${url} завершился неудачей`);
-			load404Page();
+			loadErrorPage("Ошибка api");
 		}
 	);
 	if (type=="POST"){req.send(args)}
