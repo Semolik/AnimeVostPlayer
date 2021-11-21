@@ -6,14 +6,9 @@
 .navbar-collapse {
 	justify-content: right;
 }
-@media screen and (min-width: 576px) {
-	.navbar-collapse {
-		display: flex;
-		flex-direction: row;
-	}
-}
 .navbar-collapse .my-2 {
 	display: flex;
+	margin: 0 10px;
 }
 .navbar ul li {
 	margin: 0 10px;
@@ -25,4 +20,10 @@
 }
 .my-2 input,.my-2 button, .navbar-toggler, {
 	margin: 0 5px;
+}
+nav .pagination {
+/*	margin: 20px;*/
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }

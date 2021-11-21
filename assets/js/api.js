@@ -29,6 +29,7 @@ function loadPage() {
 			unpackLastTitles,
 			"POST",
 			"name="+encodeURIComponent(getParameterByName('search')),
+			function(){loadErrorPage("404");},
 		);
         return
     }
@@ -132,17 +133,18 @@ function AnimevostApiMethod(
 					loadErrorPage("404");
 				}
 			} catch {
+				
 				onload(resp);
 			}
 	}
 		
 	};
 	req.onerror = (
-		onerror!=null ?
-		onerror : function() {
+		!(onerror!=null) ?
+		function() {
 			console.log(`${type} запрос ${url} завершился неудачей`);
 			loadErrorPage("Ошибка api");
-		}
+		} : onerror
 	);
 	if (type=="POST"){req.send(args)}
 	else {req.send()}
@@ -316,6 +318,7 @@ function unpackOneTitle(resp){
 	console.log(newTitle);
 	SetStylesheet('assets/css/watch.css');
 	var container = document.getElementById('container');
+	container.className = "container";
 		var title = document.createElement("h1");
 		var ru_title = titleName(newTitle['title']);
 		title.className = "title";
@@ -445,11 +448,14 @@ function unpackLastTitles(newTitles) {
 	} 
 	SetStylesheet('assets/css/index.css');
 	var container = document.getElementById('container');
+	container.className = "center w-100";
 	var cards = [];
 	for (var i = 0; i < lastTitles.length; i++) {
 		var lastTitle = lastTitles[i];
+		var card_div = document.createElement("div");
+		card_div.className = "w-xxl-20 col-xl-3 col-lg-4 col-md-4 col-sm-6 col-15 p-3 m-0 center";
 		var card = document.createElement("a");
-		card.className = "col-md card";
+		card.className = "card";
 		card.href = Location+"?id="+lastTitle['id'];
 			var img = document.createElement("img");
 			img.src = lastTitle['urlImagePreview'];
@@ -458,17 +464,16 @@ function unpackLastTitles(newTitles) {
 			title.className = "name";
 			title.innerHTML = lastTitle['title'];
 			card.appendChild(title);
-		cards.push(card);
+		card_div.appendChild(card);
+		cards.push(card_div);
 	}
-	var sliced_cards = slice_array(cards,4);
+	var sliced_cards = cards;
+	var row = document.createElement("div");
+	row.className = "row center w-100 px-2";
 	for (var i = 0; i < sliced_cards.length; i++) {
-		var row = document.createElement("div");
-		row.className = "row main";
-		for (var j = 0; j < sliced_cards[i].length; j++) {
-			row.appendChild(sliced_cards[i][j]);
-		}
-		container.appendChild(row);
+		row.appendChild(sliced_cards[i]);
 	}
+	container.appendChild(row);
 	var body = document.body;
 	var search = getParameterByName('search');
 	search = ((search!==null&&search!=="null")? "&search="+search : "");
