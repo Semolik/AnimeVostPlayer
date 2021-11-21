@@ -187,54 +187,15 @@ a.link:hover {
 	align-items: center;
 	flex-wrap: wrap;
 }
-@media screen and (max-width: 350px){
-	.characters .character {
-		height: 11rem;
-		margin: 3px;
-/*		width: calc(50% - 10px);*/
-	}
-}
-@media screen and (max-width: 443px) and (min-width: 350px){
-	.characters .character {
-		margin: 5px;
-		height: 12rem;
-		
-	}
-}
-@media screen and (max-width: 540px) and (min-width: 443px) {
-	 .characters .character {
-		margin: 10px;
-		height: 14rem;
-	}
-}
-@media screen and (max-width: 768px) and (min-width: 540px) {
-    .characters .character {
-		margin: 5px;
-		height: 20rem;
-	}
-}
-@media screen and (max-width:1200px) and (min-width: 768px){
-	.characters .character {
-		margin: 10px;
-		height: 22rem;
-	}
-}
-@media screen and (min-width: 1200px){
-	.characters .character {
-		height: 22rem;
-		margin: 10px;
-		width: min-content;
-	}
-}
+
 .characters .character {
-	margin-top: 10px;
-	min-width: min-content;
 	display: flex;
 	text-decoration: none;
 	color: black;
 	flex-direction: column;
-	aspect-ratio: 1.4/2;
+	aspect-ratio: 0.6;
 	border-radius: 1rem;
+	overflow-x: hidden;
 	background: var(--block-backgroung);
 	transition: .4s;
 	box-shadow: 0px 2px 8px 0px var(--clr-gray-light);

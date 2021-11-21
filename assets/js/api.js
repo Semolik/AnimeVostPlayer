@@ -186,7 +186,7 @@ function loadShikimori(resp){
 			var characters_data = JSON.parse(characters_data);
 			var box = document.getElementsByClassName("box")[0];
 			var characters = document.createElement("div");
-			characters.className = "characters";
+			characters.className = "characters row w-100";
 			var roles = [];
 			for (var i = 0; i < characters_data.length; i++) {
 				if (characters_data[i]['roles'].includes('Main')){
@@ -200,7 +200,7 @@ function loadShikimori(resp){
 				for (var i = 0; i < roles.length; i++){
 					var character = document.createElement("a");
 					character.href = ShikimoriLink+roles[i]['url'];
-					character.className = "character";
+					character.className = "col-lg-2 col-md-3 col-sm-4 col-5 character m-1 p-0";
 						var img = document.createElement("div");
 						img.style.backgroundImage = "url("+ShikimoriLink+roles[i]['image']['original'] +")";
 						character.appendChild(img);
