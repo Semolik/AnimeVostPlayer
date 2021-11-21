@@ -63,14 +63,13 @@ function loadFavorites(){
 				output.push(JSON.parse(data[i]));
 				}
 		}
-		console.log(output);
-		var out_data = JSON.stringify({
+		var out_data = {
 			state: {
 				count: output.length,
 				status: "ok"
 			},
 			data: output.reverse(),
-		});
+		};
 		unpackLastTitles(out_data);
 	} else {
 		var container = document.getElementById("container");
@@ -125,7 +124,7 @@ function AnimevostApiMethod(
 	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	req.onload = function(){
 		if (req.response != null) {
-			resp = JSON.parse(req.response);
+			var resp = JSON.parse(req.response);
 			try {
 				if (resp['state']['status']=='ok'){
 					onload(resp);
@@ -434,7 +433,6 @@ function SetScript(path){
 }
 function unpackLastTitles(newTitles) {
    	var lastTitles = [];
-	console.log(newTitles);
 	var page = getParameterByName('page');
 	for (i=0; i<newTitles.data.length; i++) {
 		lastTitles.push(newTitles.data[i]);
