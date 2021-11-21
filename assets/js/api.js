@@ -200,7 +200,7 @@ function loadShikimori(resp){
 				for (var i = 0; i < roles.length; i++){
 					var character = document.createElement("a");
 					character.href = ShikimoriLink+roles[i]['url'];
-					character.className = "col-lg-2 col-md-3 col-sm-4 col-5 character m-1 p-0";
+					character.className = "col-lg-2 col-md-3 col-sm-4 col-5 character m-1 m-sm-2 p-0";
 						var img = document.createElement("div");
 						img.style.backgroundImage = "url("+ShikimoriLink+roles[i]['image']['original'] +")";
 						character.appendChild(img);
