@@ -186,7 +186,7 @@ function loadShikimori(resp){
 		var characters_data = req.response;
 		if (characters_data != null) {
 			var characters_data = JSON.parse(characters_data);
-			var box = document.getElementsByClassName("box")[0];
+			var box = document.getElementById("shikimori-block");
 			var characters = document.createElement("div");
 			characters.className = "characters row w-100";
 			var roles = [];
@@ -227,7 +227,37 @@ function loadShikimori(resp){
 	
 	
 }
-
+function loadSeasons(name, id){
+	var req = new XMLHttpRequest();
+	req.open("POST", "https://semolikavplayerapi.herokuapp.com/api/search", true);
+	req.setRequestHeader("Content-Type", "application/json");
+	req.onload = function(){
+		if (req.status==200){
+			var resp = JSON.parse(req.response);
+			var elem = document.getElementById("seasons-block");
+			var block_title = document.createElement("h2");
+			block_title.innerHTML = "Это аниме состоит из";
+			elem.appendChild(block_title);
+			elem.className = "seasons";
+			var blocks_container = document.createElement("div");
+			var blocks = document.createElement("div");
+			blocks.className = "blocks";
+			for(var key in resp.links){
+				var div = document.createElement("a");
+				div.href = Location+"?id="+ resp.links[key].id;
+				div.className = "block link";
+					var name = document.createElement("div");
+					name.className = "name";
+					name.innerHTML = resp.links[key].name;
+					div.appendChild(name);
+				blocks.appendChild(div);
+			}
+			elem.appendChild(blocks);
+		}
+	}
+	req.onerror = function(){console.log("Ошибка загрузки сезонов")}
+	req.send(JSON.stringify({"name":name,"id": id}))
+}
 function loadScreenshots(resp){
 	if(resp == null || resp.length == 2){
 		return
@@ -235,7 +265,7 @@ function loadScreenshots(resp){
 	var data = JSON.parse(resp);
 	SetStylesheet('assets/css/fancybox.css');
 	SetScript('assets/js/fancybox.umd.js')
-	var box = document.getElementsByClassName("box")[0];
+	var box = document.getElementById("shikimori-block");
 	var h2 = document.createElement("h2");
 	var gallery = document.createElement("div");
 	gallery.className = "gallery fbox3";
@@ -411,7 +441,15 @@ function unpackOneTitle(resp){
 				info_box.appendChild(text_box);
 			box.appendChild(info_box);
 			box.appendChild(video_mask);
+			var shikimori = document.createElement("div");
+			shikimori.id = "shikimori-block";
+			box.appendChild(shikimori);
+	
+			var seasons = document.createElement("div");
+			seasons.id = "seasons-block";
+			box.appendChild(seasons);
 		container.appendChild(box);
+		loadSeasons(newTitle['title'], id);
 		GetAnimesMethodByArg(
 			"?search="+titleOriginalName(newTitle['title'])+" "+titleName(newTitle['title']),
 			function(resp) {
