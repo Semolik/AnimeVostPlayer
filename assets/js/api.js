@@ -227,37 +227,7 @@ function loadShikimori(resp){
 	
 	
 }
-function loadSeasons(name, id){
-	var req = new XMLHttpRequest();
-	req.open("POST", "https://semolikavplayerapi.herokuapp.com/api/search", true);
-	req.setRequestHeader("Content-Type", "application/json");
-	req.onload = function(){
-		if (req.status==200){
-			var resp = JSON.parse(req.response);
-			var elem = document.getElementById("seasons-block");
-			var block_title = document.createElement("h2");
-			block_title.innerHTML = "Это аниме состоит из";
-			elem.appendChild(block_title);
-			elem.className = "seasons";
-			var blocks_container = document.createElement("div");
-			var blocks = document.createElement("div");
-			blocks.className = "blocks";
-			for(var key in resp.links){
-				var div = document.createElement("a");
-				div.href = Location+"?id="+ resp.links[key].id;
-				div.className = "block link";
-					var name = document.createElement("div");
-					name.className = "name";
-					name.innerHTML = resp.links[key].name;
-					div.appendChild(name);
-				blocks.appendChild(div);
-			}
-			elem.appendChild(blocks);
-		}
-	}
-	req.onerror = function(){console.log("Ошибка загрузки сезонов")}
-	req.send(JSON.stringify({"name":name,"id": id}))
-}
+
 function loadScreenshots(resp){
 	if(resp == null || resp.length == 2){
 		return
@@ -447,6 +417,10 @@ function unpackOneTitle(resp){
 	
 			var seasons = document.createElement("div");
 			seasons.id = "seasons-block";
+			seasons.className = "seasons";
+			var loader = document.createElement("div");
+			loader.className = "loader";
+			seasons.appendChild(loader);
 			box.appendChild(seasons);
 		container.appendChild(box);
 		loadSeasons(newTitle['title'], id);
@@ -460,6 +434,40 @@ function unpackOneTitle(resp){
 				);
 			}
 		);
+}
+function loadSeasons(name, id){
+	var req = new XMLHttpRequest();
+	var elem = document.getElementById("seasons-block");
+	req.open("POST", "https://semolikavplayerapi.herokuapp.com/api/search", true);
+	req.setRequestHeader("Content-Type", "application/json");
+	req.onload = function(){
+		
+		if (req.status==200){
+			var resp = JSON.parse(req.response);
+			var block_title = document.createElement("h2");
+			block_title.innerHTML = "Это аниме состоит из";
+			var blocks_container = document.createElement("div");
+			var blocks = document.createElement("div");
+			blocks.className = "blocks";
+			for(var key in resp.links){
+				var div = document.createElement("a");
+				div.href = Location+"?id="+ resp.links[key].id;
+				div.className = "block link";
+					var name = document.createElement("div");
+					name.className = "name";
+					name.innerHTML = resp.links[key].name;
+					div.appendChild(name);
+				blocks.appendChild(div);
+			}
+			elem.removeChild(elem.firstChild);
+			elem.appendChild(block_title);
+			elem.appendChild(blocks);
+		} else {
+			elem.removeChild(elem.firstChild);
+		}
+	}
+	req.onerror = function(){console.log("Ошибка загрузки сезонов")}
+	req.send(JSON.stringify({"name":name,"id": id}))
 }
 function SetStylesheet(path){
 	var newSS=document.createElement('link');

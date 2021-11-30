@@ -8,7 +8,19 @@
 	margin: 0;
 	padding: 0;
 }
+.loader {
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid var(--block-backgroung); /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
+}
 
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
 .container {
 	width: 100%;
 	display: flex;
@@ -227,7 +239,6 @@ a.link:hover {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
-/*	align-items: center;*/
 	justify-content: center;
 	
 }
@@ -257,6 +268,9 @@ a.link:hover {
 	}
 	.image:nth-child(4) ~ .image *{
 		height: 0;
+	}
+	.seasons .blocks .block {
+		width: calc(100% / 2 - 20px);
 	}
 	
 }
@@ -310,6 +324,12 @@ label::after {
 .gallery img {
 	border-radius: 1rem;
 }
+.seasons {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
 .seasons .blocks {
 	display: flex;
 	justify-content: center;
@@ -320,4 +340,5 @@ label::after {
 .seasons .blocks .block{
 	text-decoration: none;
 	color: black;
+	min-height: 4rem;
 }
