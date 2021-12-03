@@ -157,7 +157,7 @@ function loadShikimori(resp){
 		return
 	}
 	var data = JSON.parse(resp);
-	console.log(data);
+//	console.log(data);
 	var blocks = document.getElementsByClassName("blocks")[0];
 	var block = document.createElement("div");
 	var block_a = document.createElement("a");
@@ -315,7 +315,7 @@ function SaveToFavorites(){
 }
 function unpackOneTitle(resp){
 	var newTitle = resp.data[0];
-	console.log(newTitle);
+//	console.log(newTitle);
 	SetStylesheet('assets/css/watch.css');
 	var container = document.getElementById('container');
 	container.className = "container";
@@ -371,17 +371,13 @@ function unpackOneTitle(resp){
 							var favorite = document.createElement("object");
 							favorite.setAttribute("data", "assets/images/heart.svg");
 							let id = encodeURIComponent(getParameterByName("id"));
-							let data = localStorage.getItem('data');
+							var data = localStorage.getItem('data');
 							if (data!='' && data!=null){
-								data = data.split('|');
-								var ids = [];
-								for (i=0; i<data.length; i++) {
-									data = JSON.parse(data[i]);
-									ids.push(data.id);
-								}
-								if (ids.indexOf(parseInt(encodeURIComponent(getParameterByName("id")))) != -1){
-									favorite.style.filter = "invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%)";
-								}
+								data.split('|').forEach(function(element){
+									if (JSON.parse(element).id == parseInt(encodeURIComponent(getParameterByName("id")))){
+										favorite.style.filter = "invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%)";	
+									}
+								});
 							}
 							favorite.setAttribute("type", "image/svg+xml");
 							favorite.id = "favorite";
