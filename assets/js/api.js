@@ -340,13 +340,10 @@ function unpackOneTitle(resp){
 				var text_box = document.createElement("div");
 				text_box.className = "text-box";
 					var elems = [
-//							"Тип: "+newTitle['type'],
 						["Год",newTitle['year']],
 						["Эпизодов",seriesFromTitle(newTitle['title'])],
 						["Режиссер", newTitle['director']],
 						["Жанры", newTitle['genre']],
-//							"Статус",
-//							"Альтернативные названия",
 					];
 					var blocks = document.createElement("div");
 					blocks.className = "blocks";
@@ -365,6 +362,57 @@ function unpackOneTitle(resp){
 								blocks.appendChild(div);
 							}
 						}
+					var timer = document.createElement("div");
+					timer.className = "block";
+					var name = document.createElement("div");
+					name.className = "name";
+					if (newTitle['timer']!==0){
+						name.innerHTML = 'До выхода новой серии осталось';
+						timer.appendChild(name);
+						var value = document.createElement("div");
+						value.className = "value";
+						value.innerHTML = '0:00:00:00';
+						value.id = "timer";
+						timer.appendChild(value);
+						var req = new XMLHttpRequest();
+						var elem = document.getElementById("seasons-block");
+						req.open("GET", "https://semolikavplayerapi.herokuapp.com/api/time", true);
+						req.setRequestHeader("Content-Type", "application/json");
+						req.onload = function() {
+							if (req.status==200){
+								var left = parseInt(newTitle['timer'] - req.response);
+								insertAfter(blocks.getElementsByClassName('block')[elems.length-1], timer);
+								setInterval(function() {
+									var foo = new Date;
+									left = left - 1;
+									if (left > 0){
+										minutes = left / 60 | 0,
+										hours = minutes / 60 | 0,
+										days = hours / 24 | 0,
+										hours = hours % 24;
+										if (hours < 10){hours = "0"+hours};
+										seconds = left%60;
+										if (seconds < 10){seconds = "0"+seconds};
+										minutes %= 60;
+										if (minutes < 10){minutes = "0"+minutes};
+										dd = " дней ";
+										tid = "";
+										if (days == 1){dd = " день "};
+										if (days < 5 && days > 1){dd = " дня "};
+										if (days > 0){tid = days + dd};
+										value.innerHTML = days + ":" + hours +":"+ minutes +":"+ seconds ;
+									}
+								}, 1000);
+							} else {
+								throw "";
+							}
+						}
+						req.onerror = function(){console.log("Ошибка получения времени сервера")}
+						req.send()
+					} else {
+						name.innerHTML = 'Данный релиз входит в раздел "нестабильных". Серии выходят по мере возможности.';
+						timer.appendChild(name);
+					}
 					div_.appendChild(blocks);
 						var favorite_div = document.createElement("div");
 						favorite_div.className = "icon-box";
@@ -586,6 +634,9 @@ function seriesFromTitle(name) {
     return second[1].substring(0, second[1].length - 1)
 }
 
+function insertAfter(referenceNode, newNode) {
+	referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
 
 function rebuildPlaylist(old) {
     var res = new Array();
