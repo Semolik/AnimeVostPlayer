@@ -18,10 +18,29 @@ function getPageType() {
 	if (favorites != null) {
         return "favorites";     
     }
+	let year = getParameterByName('year');
+	if (year != null) {
+        return "year";     
+    }
+	let gen = getParameterByName('gen');
+	if (gen != null) {
+        return "gen";     
+    }
     return "last";
 }
 
 function loadPage() {
+	AnimevostApiMethod(
+		"genres",
+		loadDropdown,
+		"POST",
+		"",
+		function(){
+			document.getElementById("dropdown-genres").style.display = "none";
+			document.getElementById("dropdown-years").style.display = "none";
+			console.log("Ошибка получения жанров");
+		}
+	);
     let type = getPageType();
     if (type == "search") {
         AnimevostApiMethod(
@@ -46,6 +65,24 @@ function loadPage() {
 		loadFavorites();
         return
     }
+	if (type == "gen") {
+		AnimevostApiMethod(
+			"search",
+			loadYearOrGenre,
+			"POST",
+			"gen="+getParameterByName('gen'),
+		)
+		return
+	}
+	if (type == "year") {
+		AnimevostApiMethod(
+			"search",
+			loadYearOrGenre,
+			"POST",
+			"year="+getParameterByName('year'),
+		)
+        return
+    }
 	var page = getParameterByName('page');
 	AnimevostApiMethod(
 		"last?page="+(page!=null ? page : 1)+"&quantity=20",
@@ -53,9 +90,51 @@ function loadPage() {
 		"GET",
 	);
 }
+function loadDropdown(data) {
+//	console.log(data);
+	var dropdown_genres = document.getElementById("dropdown-menu-genres");
+	var dropdown_years = document.getElementById("dropdown-menu-years");
+	var genres = new Array();
+	var years = new Array();
+	for (var key in data){
+		if (data[key]!="Жанр"){
+			if (!isNaN(data[key])){
+				years.push(parseInt(data[key]));
+			} else {
+				genres.push(data[key]);
+			}
+		}
+	}
+	years.sort((a,b)=> b-a);
+	years.forEach(function(elem){
+		var year = document.createElement("a");
+		year.className = "dropdown-item";
+		year.innerHTML = elem;
+		year.href = "/?year="+elem;
+		dropdown_years.appendChild(year);
+	});
+	genres.forEach(function(elem){
+		var genre = document.createElement("a");
+		genre.className = "dropdown-item";
+		genre.innerHTML = elem;
+		genre.href = "/?gen="+elem;
+		dropdown_genres.appendChild(genre);
+	});
+}
+function loadYearOrGenre(year){
+	var sliced_data = slice_array(year.data, 20);
+	var page = getParameterByName('page');
+	unpackLastTitles({
+		state: {
+			count: year.data.length,
+			status: "ok"
+		},
+		data: sliced_data[page==null? 0: parseInt(page)-1]
+	});
+}
 function loadFavorites(){
 	var data = localStorage.getItem('data');
-	console.log(data);
+//	console.log(data);
 	if (data!="" && data!=null){
 		var output = [];
 		data = data.split('|');
@@ -298,7 +377,7 @@ function SaveToFavorites(){
 		return;
 	} else {
 		alldata = data.split('|');
-		console.log(data);
+//		console.log(data);
 		var ids = [];
 		for (i=0; i<alldata.length; i++) {
 			data = JSON.parse(alldata[i]);
@@ -525,6 +604,7 @@ function SetScript(path){
 	document.body.appendChild(newSS);
 }
 function unpackLastTitles(newTitles) {
+//	console.log(newTitles);
    	var lastTitles = [];
 	var page = getParameterByName('page');
 	for (i=0; i<newTitles.data.length; i++) {
@@ -566,7 +646,15 @@ function unpackLastTitles(newTitles) {
 	container.appendChild(row);
 	var body = document.body;
 	var search = getParameterByName('search');
-	search = ((search!==null&&search!=="null")? "&search="+search : "");
+	search = (search!==null&&search!=="null" ? "&search="+search : "");
+	var year = getParameterByName('year');
+	if (year!=null){
+		search+="&year="+year;
+	}
+	var gen = getParameterByName('gen');
+	if (gen!=null){
+		search+="&gen="+gen;
+	}
 	if (pages!=1){
 		var nav = document.createElement('nav');
 			var ul = document.createElement('ul');
@@ -575,7 +663,7 @@ function unpackLastTitles(newTitles) {
 				first.className = "page-item"+(page==1?" disabled":"");
 				var first_a = document.createElement('a');
 				first_a.className = "page-link";
-				first_a.innerHTML = "<<";
+				first_a.innerHTML = "1";
 				first_a.tabIndex = -1;
 				first_a.href  = Location+"?page=1" + search;
 				first.appendChild(first_a);
@@ -587,11 +675,11 @@ function unpackLastTitles(newTitles) {
 					var a = document.createElement('a');
 						a.className = "page-link";
 						a.innerHTML = i;
-						a.href = Location+"?page="+i + search;
+						a.href = "?page="+i + search;
 						li.appendChild(a);
 						li.className = "page-item";
 					if (i==page){
-						li.className = "page-item active";
+						li.className = "page-item disabled";
 					}
 					ul.appendChild(li);
 				}
@@ -599,7 +687,7 @@ function unpackLastTitles(newTitles) {
 				last.className = "page-item"+(page==pages?" disabled":"");
 				var last_a = document.createElement('a');
 				last_a.className = "page-link";
-				last_a.innerHTML = ">>";
+				last_a.innerHTML = pages;
 				last_a.href  = Location+"?page="+pages + search;
 				last.appendChild(last_a);
 				ul.appendChild(last);
