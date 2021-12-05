@@ -280,7 +280,7 @@ function loadShikimori(resp){
 			var characters_data = JSON.parse(characters_data);
 			var box = document.getElementById("shikimori-block");
 			var characters = document.createElement("div");
-			characters.className = "characters row w-100";
+			characters.className = "characters row";
 			var roles = [];
 			for (var i = 0; i < characters_data.length; i++) {
 				if (characters_data[i]['roles'].includes('Main')){
