@@ -110,14 +110,14 @@ function loadDropdown(data) {
 		var year = document.createElement("a");
 		year.className = "dropdown-item";
 		year.innerHTML = elem;
-		year.href = Location+"/?year="+elem;
+		year.href = Location+"?year="+elem;
 		dropdown_years.appendChild(year);
 	});
 	genres.forEach(function(elem){
 		var genre = document.createElement("a");
 		genre.className = "dropdown-item";
 		genre.innerHTML = elem;
-		genre.href = Location+"/?gen="+elem;
+		genre.href = Location+"?gen="+elem;
 		dropdown_genres.appendChild(genre);
 	});
 }
