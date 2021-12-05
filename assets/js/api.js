@@ -71,6 +71,13 @@ function loadPage() {
 			loadYearOrGenre,
 			"POST",
 			"gen="+getParameterByName('gen'),
+			function(req){
+				if (req.status == 0) {
+					loadErrorPage("Нет данных");
+				} else {
+					loadErrorPage("Ошибка api");
+				}
+			}
 		)
 		return
 	}
@@ -80,6 +87,13 @@ function loadPage() {
 			loadYearOrGenre,
 			"POST",
 			"year="+getParameterByName('year'),
+			function(req){
+				if (req.status == 0) {
+					loadErrorPage("Нет данных");
+				} else {
+					loadErrorPage("Ошибка api");
+				}
+			}
 		)
         return
     }
@@ -91,7 +105,6 @@ function loadPage() {
 	);
 }
 function loadDropdown(data) {
-//	console.log(data);
 	var dropdown_genres = document.getElementById("dropdown-menu-genres");
 	var dropdown_years = document.getElementById("dropdown-menu-years");
 	var genres = new Array();
@@ -223,7 +236,7 @@ function AnimevostApiMethod(
 		function() {
 			console.log(`${type} запрос ${url} завершился неудачей`);
 			loadErrorPage("Ошибка api");
-		} : onerror
+		} : function(){onerror(req)}
 	);
 	if (type=="POST"){req.send(args)}
 	else {req.send()}
