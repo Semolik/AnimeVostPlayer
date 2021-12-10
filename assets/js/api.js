@@ -147,7 +147,6 @@ function loadYearOrGenre(year){
 }
 function loadFavorites(){
 	var data = localStorage.getItem('data');
-//	console.log(data);
 	if (data!="" && data!=null){
 		var output = [];
 		data = data.split('|');
@@ -312,6 +311,11 @@ function loadShikimori(resp){
 				loadScreenshots,
 				"screenshots"
 			);
+			GetAnimesMethodByArg(
+				data['id'],
+				loadFranchise,
+				"franchise"
+			);
 		}
 	};
 	req.onerror = function() {console.log("Ошибка загрузки информации о персонажах.");};
@@ -359,7 +363,32 @@ function loadScreenshots(resp){
 }
 
 function loadFranchise(resp){
-	
+	var data = JSON.parse(resp).nodes;
+	if (data.length<1){
+		return;
+	}
+	data.sort((a,b)=>a.date-b.date)
+//	console.log(data);
+	var box = document.getElementById("shikimori-block");
+	var h2 = document.createElement("h2");
+	h2.innerHTML = "Франшиза";
+	var characters = document.createElement("div");
+	characters.className = "characters row";
+	box.appendChild(h2);
+	for (var i = 0; i < data.length; i++){
+		var character = document.createElement("a");
+		character.href = ShikimoriLink+data[i].url;
+		character.className = "col-lg-2 col-md-3 col-sm-4 col-5 character m-1 m-sm-2 p-0";
+			var img = document.createElement("div");
+			img.style.backgroundImage = "url("+data[i].image_url.replace('x96', 'original') +")";
+			character.appendChild(img);
+			img.className = "pic";
+			var p = document.createElement("p");
+			p.innerHTML = data[i].name;
+			character.appendChild(p);
+		characters.appendChild(character);
+	}
+	box.appendChild(characters);
 }
 function setupPlayer(playlist) {
 	var mask = document.getElementsByClassName("video-mask")[0];

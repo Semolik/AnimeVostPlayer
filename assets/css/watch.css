@@ -228,7 +228,7 @@ a.link:hover {
 	width: 100%;
 }
 .characters .character p {
-	min-height: 1rem;
+/*	min-height: 1rem;*/
 	margin:0;
 	padding: 10px;
 	padding-bottom: 15px;
