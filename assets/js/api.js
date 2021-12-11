@@ -278,8 +278,6 @@ function loadShikimori(resp){
 		if (characters_data != null) {
 			var characters_data = JSON.parse(characters_data);
 			var box = document.getElementById("shikimori-block");
-			var characters = document.createElement("div");
-			characters.className = "characters row";
 			var roles = [];
 			for (var i = 0; i < characters_data.length; i++) {
 				if (characters_data[i]['roles'].includes('Main')){
@@ -287,15 +285,18 @@ function loadShikimori(resp){
 				}
 			}
 			if (roles.length>0){
+				console.log(roles);
 				var h2 = document.createElement("h2");
 				h2.innerHTML = "Главные герои";
 				box.appendChild(h2);
+				var characters = document.createElement("div");
+				characters.className = "characters row";
 				for (var i = 0; i < roles.length; i++){
 					var character = document.createElement("a");
 					character.href = ShikimoriLink+roles[i]['url'];
 					character.className = "col-lg-2 col-md-3 col-sm-4 col-5 character m-1 m-sm-2 p-0";
 						var img = document.createElement("div");
-						img.style.backgroundImage = "url("+ShikimoriLink+roles[i]['image']['original'] +")";
+						img.style.backgroundImage = "url("+ShikimoriLink+roles[i]['image']['preview'] +")";
 						character.appendChild(img);
 						img.className = "pic";
 						var p = document.createElement("p");
@@ -353,7 +354,7 @@ function loadScreenshots(resp){
 		image.className = "image";
 		var img = document.createElement("img");
 		img.className = "img-fluid";
-		img.src = ShikimoriLink+data[i]['original'];
+		img.src = ShikimoriLink+data[i]['preview'];
 		image_a.appendChild(img);
 		image.appendChild(image_a);
 		gallery.appendChild(image);
@@ -379,7 +380,7 @@ function loadFranchise(resp){
 		character.href = ShikimoriLink+data[i].url;
 		character.className = "col-lg-2 col-md-3 col-sm-4 col-5 character m-1 m-sm-2 p-0";
 			var img = document.createElement("div");
-			img.style.backgroundImage = "url("+data[i].image_url.replace('x96', 'original') +")";
+			img.style.backgroundImage = "url("+data[i].image_url.replace('x96', 'preview') +")";
 			character.appendChild(img);
 			img.className = "pic";
 			var p = document.createElement("p");
@@ -435,7 +436,6 @@ function SaveToFavorites(){
 }
 function unpackOneTitle(resp){
 	var newTitle = resp.data[0];
-//	console.log(newTitle);
 	SetStylesheet('assets/css/watch.css');
 	var container = document.getElementById('container');
 	container.className = "container";
