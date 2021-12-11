@@ -647,7 +647,6 @@ function SetScript(path){
 	document.body.appendChild(newSS);
 }
 function unpackLastTitles(newTitles) {
-//	console.log(newTitles);
    	var lastTitles = [];
 	var page = getParameterByName('page');
 	for (i=0; i<newTitles.data.length; i++) {
@@ -662,6 +661,7 @@ function unpackLastTitles(newTitles) {
 	SetStylesheet('assets/css/index.css');
 	var container = document.getElementById('container');
 	container.className = "center w-100";
+	var favorites = getParameterByName('favorites');
 	var cards = [];
 	for (var i = 0; i < lastTitles.length; i++) {
 		var lastTitle = lastTitles[i];
@@ -673,10 +673,12 @@ function unpackLastTitles(newTitles) {
 			var img = document.createElement("img");
 			img.src = lastTitle['urlImagePreview'];
 			card.appendChild(img);
-			var rating = document.createElement("div");
-			rating.className = "rating";
-			rating.innerHTML = Math.round(lastTitle['rating']/lastTitle['votes'] * 100) / 100 * 2;
-			card.appendChild(rating);
+			if(favorites==null){
+				var rating = document.createElement("div");
+				rating.className = "rating";
+				rating.innerHTML = Math.round(lastTitle['rating']/lastTitle['votes'] * 100) / 100 * 2;
+				card.appendChild(rating);
+			}
 			var title = document.createElement("p");
 			title.className = "name";
 			title.innerHTML = lastTitle['title'];
