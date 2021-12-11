@@ -675,7 +675,7 @@ function unpackLastTitles(newTitles) {
 			card.appendChild(img);
 			var rating = document.createElement("div");
 			rating.className = "rating";
-			rating.innerHTML = Math.round(lastTitle['rating']/lastTitle['votes'] * 100) / 100;
+			rating.innerHTML = Math.round(lastTitle['rating']/lastTitle['votes'] * 100) / 100 * 2;
 			card.appendChild(rating);
 			var title = document.createElement("p");
 			title.className = "name";
