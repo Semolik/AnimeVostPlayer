@@ -368,8 +368,7 @@ function loadFranchise(resp){
 		return;
 	}
 	data.sort((a,b)=>a.date-b.date)
-//	console.log(data);
-	var box = document.getElementById("shikimori-block");
+	var box = document.getElementById("shikimori-block-2");
 	var h2 = document.createElement("h2");
 	h2.innerHTML = "Франшиза";
 	var characters = document.createElement("div");
@@ -579,7 +578,9 @@ function unpackOneTitle(resp){
 			var shikimori = document.createElement("div");
 			shikimori.id = "shikimori-block";
 			box.appendChild(shikimori);
-	
+			var shikimori_2 = document.createElement("div");
+			shikimori_2.id = "shikimori-block-2";
+			box.appendChild(shikimori_2);
 			var seasons = document.createElement("div");
 			seasons.id = "seasons-block";
 			seasons.className = "seasons";
@@ -672,6 +673,10 @@ function unpackLastTitles(newTitles) {
 			var img = document.createElement("img");
 			img.src = lastTitle['urlImagePreview'];
 			card.appendChild(img);
+			var rating = document.createElement("div");
+			rating.className = "rating";
+			rating.innerHTML = Math.round(lastTitle['rating']/lastTitle['votes'] * 100) / 100;
+			card.appendChild(rating);
 			var title = document.createElement("p");
 			title.className = "name";
 			title.innerHTML = lastTitle['title'];

@@ -42,11 +42,25 @@ body {
 	color: black;
 	transition-duration: .4s;
 	transition-property:transform;
+	position: relative;
 }
 
 .card {
 	transition-duration: .4s;
 	transition-property:transform;
+}
+.card .rating{
+	position: absolute;
+	color: white;
+	right: 0;
+	top: 1rem;
+	min-width: 3.75rem;
+	background: #7289DA;
+	border-radius: 1rem 0 0 1rem;
+	padding: 1px 5px;
+}
+.card .rating::after{
+	content: ' ★';
 }
 .card .name {
 
