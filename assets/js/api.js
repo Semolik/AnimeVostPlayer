@@ -285,7 +285,6 @@ function loadShikimori(resp){
 				}
 			}
 			if (roles.length>0){
-				console.log(roles);
 				var h2 = document.createElement("h2");
 				h2.innerHTML = "Главные герои";
 				box.appendChild(h2);
@@ -354,7 +353,7 @@ function loadScreenshots(resp){
 		image.className = "image";
 		var img = document.createElement("img");
 		img.className = "img-fluid";
-		img.src = ShikimoriLink+data[i]['preview'];
+		img.src = ShikimoriLink+data[i]['original'];
 		image_a.appendChild(img);
 		image.appendChild(image_a);
 		gallery.appendChild(image);
@@ -562,16 +561,19 @@ function unpackOneTitle(resp){
 					p.innerHTML = newTitle['description'];
 					text_box.appendChild(p);
 					var video_mask = document.createElement("div");
-					video_mask.className = "video-mask";
+					if(newTitle['series'].length!=0){
+						video_mask.className = "video-mask";
 						var video = document.createElement("div");
 						video.id = "web-player";
 						video_mask.appendChild(video);
-					AnimevostApiMethod(
-						"playlist",
-						function(data) {setupPlayer(rebuildPlaylist(data))},
-						"POST",
-						"id=" +newTitle['id'],
-					);
+						AnimevostApiMethod(
+							"playlist",
+							function(data) {setupPlayer(rebuildPlaylist(data))},
+							"POST",
+							"id=" +newTitle['id'],
+						);
+					}
+					
 				info_box.appendChild(text_box);
 			box.appendChild(info_box);
 			box.appendChild(video_mask);
@@ -674,10 +676,19 @@ function unpackLastTitles(newTitles) {
 			img.src = lastTitle['urlImagePreview'];
 			card.appendChild(img);
 			if(favorites==null){
+				var info_items_container = document.createElement("div");
+				info_items_container.className = "info-items-container";
 				var rating = document.createElement("div");
-				rating.className = "rating";
+				rating.className = "info-item rating";
 				rating.innerHTML = Math.round(lastTitle['rating']/lastTitle['votes'] * 100) / 100 * 2;
-				card.appendChild(rating);
+				info_items_container.appendChild(rating);
+				var announce = lastTitle['title'].split('/')[1].includes('[Анонс]');
+				if (announce===true){
+					var announce = document.createElement("div");
+					announce.className = "info-item announce";
+					info_items_container.appendChild(announce);
+				}
+				card.appendChild(info_items_container);
 			}
 			var title = document.createElement("p");
 			title.className = "name";

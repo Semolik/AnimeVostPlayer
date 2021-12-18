@@ -49,18 +49,27 @@ body {
 	transition-duration: .4s;
 	transition-property:transform;
 }
-.card .rating{
+.card .info-items-container {
 	position: absolute;
-	color: white;
+	display: flex;
+	flex-direction: column;
 	right: 0;
 	top: 1rem;
+}
+.card .info-item{
+	
+	color: white;
+	margin: 2px 0;
 	min-width: 3.75rem;
-	background: #7289DA;
+	background: rgba(0,0,0,0.5);
 	border-radius: 1rem 0 0 1rem;
 	padding: 1px 5px;
 }
 .card .rating::after{
 	content: ' ★';
+}
+.card .announce::after{
+	content: 'Анонс';
 }
 .card .name {
 
