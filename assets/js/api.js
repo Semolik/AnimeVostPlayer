@@ -390,6 +390,7 @@ function loadFranchise(resp){
 	box.appendChild(characters);
 }
 function setupPlayer(playlist) {
+	localStorage.pljsquality = "HD";
 	var mask = document.getElementsByClassName("video-mask")[0];
     var player = new Playerjs({
 		id:"web-player",
