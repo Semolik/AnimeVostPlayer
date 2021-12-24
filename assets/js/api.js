@@ -793,14 +793,12 @@ function rebuildPlaylist(old) {
 	var other = new Array();
     old.sort(resort)
 	old.forEach(e => {
-		console.log(e['name'].indexOf('серия'));
 		if (e['name'].indexOf('серия')!=-1){
 			series.push(e)
 		} else {
 			other.push(e)
 		}
 	})
-	console.log(series + other);
 	var array = new Array();
 	series.forEach(e => {array.push(e)})
 	other.forEach(e => {array.push(e)})
