@@ -789,19 +789,33 @@ function insertAfter(referenceNode, newNode) {
 
 function rebuildPlaylist(old) {
     var res = new Array();
+	var series = new Array();
+	var other = new Array();
     old.sort(resort)
-    for (i=0; i<old.length; i++) {
-        res.push({title: old[i]["name"],
-				  poster: old[i]["preview"],
-				  file: "[SD]" + old[i]["std"] + ",[HD]" + old[i]["hd"]});
+	old.forEach(e => {
+		console.log(e['name'].indexOf('серия'));
+		if (e['name'].indexOf('серия')!=-1){
+			series.push(e)
+		} else {
+			other.push(e)
+		}
+	})
+	console.log(series + other);
+	var array = new Array();
+	series.forEach(e => {array.push(e)})
+	other.forEach(e => {array.push(e)})
+    for (i=0; i<array.length; i++) {
+        res.push({title: array[i]["name"],
+				  poster: array[i]["preview"],
+				  file: "[SD]" + array[i]["std"] + ",[HD]" + array[i]["hd"]});
     };
     return res
 }
 
 
 function resort(item1, item2) {
-	var num1 =parseInt(item1["name"].match(/\d+/));
-	var num2 =parseInt(item2["name"].match(/\d+/));
+	var num1 = parseInt(item1["name"].match(/\d+/));
+	var num2 = parseInt(item2["name"].match(/\d+/));
     return parseInt(num1) - parseInt(num2)
 }
 
