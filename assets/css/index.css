@@ -68,6 +68,15 @@ body {
 .card .rating::after{
 	content: ' ★';
 }
+.card .high {
+	background: #01c03a;
+}
+.card .middle {
+	background: #ff6702;
+}
+.card .low {
+	background: #e13535;
+}
 .card .announce::after{
 	content: 'Анонс';
 }

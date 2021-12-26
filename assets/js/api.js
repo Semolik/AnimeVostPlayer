@@ -687,14 +687,18 @@ function unpackLastTitles(newTitles) {
 				var info_items_container = document.createElement("div");
 				info_items_container.className = "info-items-container";
 				var rating = document.createElement("div");
-				rating.className = "info-item rating";
-				rating.innerHTML = Math.round(lastTitle['rating']/lastTitle['votes'] * 100) / 100 * 2;
+				var rating_value = Math.round(lastTitle['rating']/lastTitle['votes'] * 100) / 100 * 2;
+				rating.className = "info-item rating "+(rating_value>7 ? "high": (rating_value>4 ? "middle": "low"));
+				rating.innerHTML = rating_value;
 				info_items_container.appendChild(rating);
 				var announce = lastTitle['title'].split('/')[1].includes('[Анонс]');
 				if (announce===true){
 					var announce = document.createElement("div");
 					announce.className = "info-item announce";
 					info_items_container.appendChild(announce);
+				} else {
+					var series = document.createElement("div");
+					series.className = "info-item series";
 				}
 				card.appendChild(info_items_container);
 			}
