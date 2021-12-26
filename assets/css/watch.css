@@ -101,6 +101,9 @@
 .blocks .block .value {
 	word-wrap: normal;
 }
+.blocks .block .value .blocklink:hover{
+	text-decoration:underline;
+}
 @media (min-width: 1200px) {
 	.blocks {
 		height: min-content;

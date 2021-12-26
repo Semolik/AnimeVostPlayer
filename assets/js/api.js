@@ -460,10 +460,10 @@ function unpackOneTitle(resp){
 				var text_box = document.createElement("div");
 				text_box.className = "text-box";
 					var elems = [
-						["Год",newTitle['year']],
+						["Год",`<a href="?year=${newTitle['year']}" class="blocklink">${newTitle['year']}</a> `],
 						["Эпизодов",seriesFromTitle(newTitle['title'])],
 						["Режиссер", newTitle['director']],
-						["Жанры", newTitle['genre']],
+						["Жанры", newTitle['genre'], "<a href={0}>{0}</a>"],
 					];
 					var blocks = document.createElement("div");
 					blocks.className = "blocks";
@@ -477,7 +477,14 @@ function unpackOneTitle(resp){
 									div.appendChild(name);
 									var value = document.createElement("div");
 									value.className = "value";
-									value.innerHTML = elems[i][1];
+									//elems[i][2].replace('{0}', elems[i][1])
+									if (elems[i].length==3){
+										elems[i][1].split(', ').forEach((e)=> {
+											value.innerHTML+= `<a href="?gen=${e}" class="blocklink">${e}</a> `;
+										})
+									} else {
+										value.innerHTML = elems[i][1];
+									}
 									div.appendChild(value);
 								blocks.appendChild(div);
 							}
