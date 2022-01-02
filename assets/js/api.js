@@ -601,7 +601,7 @@ function unpackOneTitle(resp){
 		container.appendChild(box);
 		loadSeasons(newTitle['title'], id);
 		GetAnimesMethodByArg(
-			"?search="+titleOriginalName(newTitle['title'])+" "+titleName(newTitle['title']),
+			"?search="+titleOriginalName(newTitle['title'])+"&season="+newTitle['year'],
 			function(resp) {
 				if(resp.length == 2){return}
 				GetAnimesMethodByArg(
