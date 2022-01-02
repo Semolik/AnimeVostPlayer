@@ -600,8 +600,9 @@ function unpackOneTitle(resp){
 			box.appendChild(seasons);
 		container.appendChild(box);
 		loadSeasons(newTitle['title'], id);
+		var type = newTitle["type"]=="ТВ" ? 'tv' : (newTitle["type"]=="OVA" ? 'ova' : (newTitle["type"]=="ONA" ? 'ona' : null));
 		GetAnimesMethodByArg(
-			"?search="+encodeURIComponent(titleOriginalName(newTitle['title']))+"&season="+newTitle['year'],
+			"?search="+encodeURIComponent(titleOriginalName(newTitle['title']))+"&season="+newTitle['year']+(type!=null? "&kind="+type : ""),
 			function(resp) {
 				if(resp.length == 2){return}
 				GetAnimesMethodByArg(
