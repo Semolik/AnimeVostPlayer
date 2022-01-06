@@ -330,7 +330,7 @@ function loadScreenshots(resp){
 	}
 	var data = JSON.parse(resp);
 	SetStylesheet('assets/css/fancybox.css');
-	SetScript('assets/js/fancybox.umd.js')
+	SetScript('assets/js/fancybox.umd.js');
 	var box = document.getElementById("shikimori-block");
 	var h2 = document.createElement("h2");
 	var gallery = document.createElement("div");
@@ -567,24 +567,137 @@ function unpackOneTitle(resp){
 					text_box.appendChild(label);
 					var p = document.createElement('p');
 					p.innerHTML = newTitle['description'];
-					text_box.appendChild(p);
-					var video_mask = document.createElement("div");
-					if(newTitle['series'].length!=0){
-						video_mask.className = "video-mask";
-						var video = document.createElement("div");
-						video.id = "web-player";
-						video_mask.appendChild(video);
-						AnimevostApiMethod(
-							"playlist",
-							function(data) {setupPlayer(rebuildPlaylist(data))},
-							"POST",
-							"id=" +newTitle['id'],
-						);
-					}
-					
+					text_box.appendChild(p);	
 				info_box.appendChild(text_box);
+
 			box.appendChild(info_box);
-			box.appendChild(video_mask);
+			
+			
+			var announce = newTitle['title'].split('/')[1].includes('[Анонс]');
+			if (announce!=true){
+				var video = document.createElement("video");
+				video.id = "plr";
+				box.appendChild(video);
+				var buttons_container = document.createElement("div");
+				buttons_container.className = "buttons-container";
+					var prev = document.createElement("div");
+					var next = document.createElement("div");
+					prev.className = "button prev";
+					next.className = "button next";
+					buttons_container.appendChild(prev);
+					buttons_container.appendChild(next);
+				box.appendChild(buttons_container);
+				var series_box = document.createElement("div");
+				series_box.className = "series-box";
+				box.appendChild(series_box);
+				AnimevostApiMethod(
+					"playlist",
+					function(data) {
+						const player = new Plyr(video, {
+							playsinline: true,
+							controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'fullscreen'],
+							
+						});
+						data.sort(resort);
+						var items = new Array();
+						if (data.length==1){
+							buttons_container.style.display="none";
+						}
+						data.forEach(element => {
+							var item = document.createElement("div");
+							item.className = "item";
+							item.innerHTML = element["name"];
+							item.addEventListener('click',function(){
+								items.forEach(item => {
+									item.classList.remove('active');
+								});
+								item.classList.add("active");
+								
+								var prev_index = data.indexOf(element)-1;
+								if (prev_index>=0){
+									prev.dataset.run_id = prev_index;
+									prev.classList.remove('disable');
+								} else{
+									prev.classList.add("disable");
+								}
+								var next_imdex = data.indexOf(element)+1;
+								if (next_imdex<data.length){
+									next.dataset.run_id = next_imdex;
+									next.classList.remove('disable');
+								} else {
+									next.classList.add("disable");
+								}
+								player.source = {
+									type: 'video',
+									title: element["name"],
+									sources: [
+										{
+											src: element["hd"],
+											type: 'video/mp4',
+											size: 720,
+										},
+										{
+											src: element["std"],
+											type: 'video/mp4',
+											size: 480,
+										}
+									],
+									poster: element["preview"]
+								};
+							});
+							series_box.appendChild(item);
+							items.push(item);
+						});
+						items[0].click();
+						function run_by_id(button){
+							if (button.className.indexOf('disable')<0){
+								var id = parseInt(button.dataset.run_id);
+								player.source = {
+									type: 'video',
+									title: element["name"],
+									sources: [
+										{
+											src: data[id]["hd"],
+											type: 'video/mp4',
+											size: 720,
+										},
+										{
+											src: data[id]["std"],
+											type: 'video/mp4',
+											size: 480,
+										}
+										
+									],
+									poster: data[id]["preview"]
+								};
+								if (id-1>=0){
+									prev.dataset.run_id = id-1;
+									prev.classList.remove('disable');
+								} else{
+									prev.classList.add("disable");
+								}
+								if (id+1<data.length){
+									next.dataset.run_id = id+1;
+									next.classList.remove('disable');
+								} else {
+									next.classList.add("disable");
+								}
+								items.forEach(item => {
+									item.classList.remove('active');
+								});
+								items[id].classList.add("active");
+							}
+						}
+						prev.addEventListener('click', ()=> run_by_id(prev));
+						next.addEventListener('click', ()=> run_by_id(next));
+					},
+					"POST",
+					"id=" +newTitle['id'],
+				);
+			}
+			
+
+
 			var shikimori = document.createElement("div");
 			shikimori.id = "shikimori-block";
 			box.appendChild(shikimori);

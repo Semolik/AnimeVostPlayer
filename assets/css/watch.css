@@ -345,3 +345,88 @@ label::after {
 	color: black;
 	min-height: 4rem;
 }
+.series-box {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	margin: 1rem 0;
+	
+}
+.series-box .item {
+	border-radius: 1rem;
+	transition: .4s;
+	background-color: rgba(0, 0, 0, 0.20);
+	padding: 0.5rem;
+	border: 1px solid rgba(255, 255, 255, 0.60);
+}
+.series-box .item.active {
+	background: wheat;
+}
+.series-box .item:hover:not(.series-box .item.active){
+	background: #BED0D4;
+}
+.buttons-container {
+	display: flex;
+	margin: 1rem 0;
+	width: 100%;
+}
+.buttons-container .prev::before {
+	content: 'Прошлая серия';
+}
+.buttons-container .next::before {
+	content: 'Следущая серия';
+}
+.buttons-container .button {
+	background-color: rgba(0, 0, 0, 0.20);
+	border-radius: 1rem;
+	padding: 0.5rem;
+	transition: .4s;
+	margin: 0 2px;
+	width: 50%;
+}
+.buttons-container .button.disable {
+	background-color:rgba(0, 0, 0, 0.40);
+}
+.button:hover:not(.button.disable){
+	background: #BED0D4;
+}
+@media screen and (max-width: 768px){
+	
+	.buttons-container {
+		flex-direction: column;
+	}
+	.buttons-container .button{
+		width: 100%;
+		margin: 2px 0;
+	}
+}
+@media screen and (min-width: 768px){
+	.series-box .item {
+		width: calc(100% / 3);
+	}
+}
+@media screen and (min-width: 1320px){
+	.series-box .item {
+		width: calc(100% / 6);
+	}
+}
+@media screen and (max-width: 1320px) and (min-width: 1200px) {
+	.series-box .item {
+		width: calc(100% / 5);
+	}
+}
+@media screen and (max-width: 1200px) and (min-width: 768px){
+	.series-box .item {
+		width: calc(100% / 4);
+	}
+}
+@media screen and (max-width: 768px){
+	.series-box .item {
+		width: calc(100% / 3);
+	}
+}
+.plyr {
+	width: 100%;
+	aspect-ratio: 16/9;
+	border-radius: 0.5rem;
+}
