@@ -654,7 +654,7 @@ function unpackOneTitle(resp){
 								var id = parseInt(button.dataset.run_id);
 								player.source = {
 									type: 'video',
-									title: element["name"],
+									title: data[id]["name"],
 									sources: [
 										{
 											src: data[id]["hd"],
