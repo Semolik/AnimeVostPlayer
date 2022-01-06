@@ -644,11 +644,17 @@ function unpackOneTitle(resp){
 									],
 									poster: element["preview"]
 								};
+								localStorage[window.location.href] = data.indexOf(element);
 							});
 							series_box.appendChild(item);
 							items.push(item);
 						});
-						items[0].click();
+						var saved = localStorage[window.location.href];
+						if (saved!=undefined){
+							items[parseInt(saved)].click()
+						} else {
+							items[0].click();
+						}
 						function run_by_id(button){
 							if (button.className.indexOf('disable')<0){
 								var id = parseInt(button.dataset.run_id);
@@ -686,6 +692,7 @@ function unpackOneTitle(resp){
 									item.classList.remove('active');
 								});
 								items[id].classList.add("active");
+								localStorage[window.location.href] = id;
 							}
 						}
 						prev.addEventListener('click', ()=> run_by_id(prev));
