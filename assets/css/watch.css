@@ -115,14 +115,14 @@
 	height: 2.6rem;
 	width:	2.6rem;
 	padding: 5px;
-	
-	z-index: -1;
+}
+.box .first-box .icon-box.active > svg{
+	fill: red;
 }
 .box .first-box .icon-box {
 	background: var(--block-backgroung);
 	border-radius: 0.5rem;
 	height: min-content;
-	
 }
 @media (max-width: 768px) {
 	

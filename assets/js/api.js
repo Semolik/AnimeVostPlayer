@@ -400,15 +400,12 @@ function setupPlayer(playlist) {
 		preferFullWindow: true,
 	});
 }
-function SaveToFavorites(){
+function SaveToFavorites(button){
 	let id = encodeURIComponent(getParameterByName("id"));
 	let data = localStorage.getItem('data');
-	var button = document.getElementById("favorite");
-	if (button.style.filter == ""){
-		button.style.filter = "invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%)";
-	} else {
-		button.style.filter = "";
-	}
+	console.log(button.classList);
+	button.classList.toggle("active");
+
 	this_elem = JSON.stringify({
 				urlImagePreview: document.getElementsByClassName('preview')[0].src,
 				id: parseInt(id),
@@ -543,22 +540,23 @@ function unpackOneTitle(resp){
 					div_.appendChild(blocks);
 						var favorite_div = document.createElement("div");
 						favorite_div.className = "icon-box";
-							var favorite = document.createElement("object");
-							favorite.setAttribute("data", "assets/images/heart.svg");
+						favorite_div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>`;
 							let id = encodeURIComponent(getParameterByName("id"));
 							var data = localStorage.getItem('data');
 							if (data!='' && data!=null){
 								data.split('|').forEach(function(element){
 									if (JSON.parse(element).id == parseInt(encodeURIComponent(getParameterByName("id")))){
-										favorite.style.filter = "invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%)";	
+										favorite_div.classList.add("active");	
+									} else {
+										favorite_div.classList.remove("active");	
 									}
 								});
 							}
-							favorite.setAttribute("type", "image/svg+xml");
-							favorite.id = "favorite";
-							favorite.className = "icon";
-							favorite_div.appendChild(favorite);
-						favorite_div.setAttribute("onclick", "SaveToFavorites()");
+							// favorite.setAttribute("type", "image/svg+xml");
+							// favorite.id = "favorite";
+							// favorite.className = "icon";
+							// favorite_div.appendChild(favorite);
+						favorite_div.addEventListener('click', ()=>SaveToFavorites(favorite_div));
 					div_.appendChild(favorite_div);
 					box.appendChild(div_);
 					var label = document.createElement('h3');
