@@ -2,7 +2,8 @@ var player;
 var Location = document.location.href.split('?')[0];
 
 var ShikimoriLink = "https://shikimori.one/";
-var AnimevostApiLink = "https://api.animevost.org/v1/";
+// var AnimevostApiLink = "https://api.animevost.org/v1/";
+var AnimevostApiLink = "https://api.animetop.info/v1/";
 
 
 function getPageType() {
